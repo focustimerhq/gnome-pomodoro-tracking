@@ -1,7 +1,7 @@
 # Copyright (c) gnome-pomodoro-tracking contributors. SPDX-License-Identifier: MIT
 # Authors: Jose Hernandez <josehbez@outlook.com>
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
@@ -80,3 +80,13 @@ def time_elapsed(dtstart, dtend, formatter="seconds"):
 
 def now():
     return datetime.utcnow().strftime(DATETIME_FORMAT)
+
+
+def minutes_before(dtend, minutes):
+    """Return the timestamp `minutes` before `dtend` (DATETIME_FORMAT string)."""
+    try:
+        dt_end = datetime.strptime(dtend, DATETIME_FORMAT)
+        dt_start = dt_end - timedelta(minutes=minutes)
+        return dt_start.strftime(DATETIME_FORMAT)
+    except Exception:
+        return dtend

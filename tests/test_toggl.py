@@ -1,64 +1,52 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2021 The Project GNOME Pomodoro Tracking Authors
-import os
+# Copyright (c) gnome-pomodoro-tracking contributors. SPDX-License-Identifier: MIT
+# Authors: Jose Hernandez <josehbez@outlook.com>
+
+from unittest.mock import patch
+
 from tests.test_plugin import TestPlugin
-from mock import patch
 
 
 class TestToggl(TestPlugin):
-
     plugin = "toggl"
-    token = os.getenv("GP_TRACKING_TOGGL_TOKEN", "19c98455494ab3f5d72d91de5c26b116")
+    token = "19c98455494ab3f5d72d91de5c26b116"
 
-    workspaces = [
+    workspaces_data = [
         {"id": 4755497, "name": "Workspace T1"},
-        {"id": 4755487, "name": "Workspace T2"},
     ]
-    projects = [
+    projects_data = [
         {"id": 164238639, "name": "Project T1", "wid": 4755497},
-        {"id": 168573879, "name": "Project T2", "wid": 4755487},
     ]
 
-    auth = True
     time_entry = {"id": 1950743713, "name": "Time entry"}
 
     def setUp(self) -> None:
-        super(TestToggl, self).setUp()
-        self.gpt.settings_config("plugin", self.plugin)
-        self.gpt.set_config(self.plugin, "token", self.token)
+        super().setUp()
+        self.config.set("settings", "plugin", self.plugin)
+        self.config.set(self.plugin, "token", self.token)
 
-        if self.token == "19c98455494ab3f5d72d91de5c26b116":
-            patch(
-                "gnome_pomodoro_tracking.toggl.Toggl.auth", return_value=self.auth
-            ).start()
-            patch(
-                "gnome_pomodoro_tracking.toggl.Toggl.workspaces",
-                return_value=self.workspaces,
-            ).start()
-            patch(
-                "gnome_pomodoro_tracking.toggl.Toggl.projects",
-                return_value=self.projects,
-            ).start()
-            patch(
-                "gnome_pomodoro_tracking.toggl.Toggl.add_time_entry",
-                return_value=self.time_entry,
-            ).start()
-
-        self.load_plugin()
+        patch("gnome_pomodoro_tracking.plugins.toggl.Toggl.auth", return_value=True).start()
+        patch(
+            "gnome_pomodoro_tracking.plugins.toggl.Toggl.workspaces",
+            return_value=self.workspaces_data,
+        ).start()
+        patch(
+            "gnome_pomodoro_tracking.plugins.toggl.Toggl.projects",
+            return_value=self.projects_data,
+        ).start()
+        patch(
+            "gnome_pomodoro_tracking.plugins.toggl.Toggl.add_time_entry",
+            return_value=self.time_entry,
+        ).start()
 
     def test_cli(self):
+        # Workspaces
+        self.execute_cli(
+            self.plugin, workspaces=True, projects=False, token=None, set="4755497"
+        )
+        assert self.config.get(self.plugin, "workspace_id") == "4755497"
 
-        args = {"toggl_workspaces": True}
-        idA = self.cli_list(args)
-        args.update({"set": idA})
-        idB = self.cli_set(args)
-        assert idA == idB
-
-        args.update({"toggl_projects": True, "toggl_workspaces": False, "set": False})
-        idA = self.cli_list(args)
-        args.update({"set": idA})
-        idB = self.cli_set(args)
-        assert idA == idB
-
-        args.update({"time_entry": True, "set": False, "toggl_projects": True})
-        self.cli_time_entry(args)
+        # Projects
+        self.execute_cli(
+            self.plugin, workspaces=False, projects=True, token=None, set="164238639"
+        )
+        assert self.config.get(self.plugin, "project_id") == "164238639"

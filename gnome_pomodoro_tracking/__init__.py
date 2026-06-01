@@ -1,2 +1,2 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2021 The Project GNOME Pomodoro Tracking Authors
+# Copyright (c) gnome-pomodoro-tracking contributors. SPDX-License-Identifier: MIT
+# Authors: Jose Hernandez <josehbez@outlook.com>

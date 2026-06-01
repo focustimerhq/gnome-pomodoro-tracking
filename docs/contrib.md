@@ -1,46 +1,49 @@
-# Contributtion Guide
+# Contribution Guide
 
 ## Setup your workspace 
-* Install pipenv 
+* Install `uv`
 ```bash
-pip install pipenv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-* Create a .env and export your python path, replace YOUR_PROJECT_PATH with your project path
+* Initialize the project
 ```bash
-export PYTHONPATH=$PYTHONPATH:YOUR_PROJECT_PATH
+uv sync --extra dev
 ```
 
-##  Install dependencies
-```bash
-pip install -r requirements.dev.txt
-```
+## Running the application locally
 
-##  Set up GNOME Pomodoro
-
-Use the below script to run the application, inside script replace YOUR_PROJECT_PATH with your project path.
+You can test the CLI locally using `uv run`:
 
 ```bash 
-YOUR_PROJECT_PATH/utils/startup-dev.sh gnome-pomodoro-tracking -gps "$(state)" -gpt "$(triggers)" -gpd "$(duration)" -gpe "$(elapsed)"
+uv run gnome-pomodoro-tracking --start --name "Testing plugin"
 ```
 
-## Lint using flake8
+To test GNOME Pomodoro specific triggers:
 ```bash
-flake8 . --count --exit-zero --statistics
+uv run gnome-pomodoro-tracking -gps "pomodoro" -gpt "start" -gpd "25" -gpe "0"
+```
+
+## Code Quality
+
+Format and lint the code using `ruff`:
+```bash
+uv run ruff format .
+uv run ruff check . --fix
 ```
 
 ## Test using pytest
 ```bash
-python -m unittest
+uv run pytest tests/
 ```
 
-## Publish on pypi
+## Publish on PyPI
 
-Build
+Build the package using `build`:
 ```bash
-python setup.py sdist bdist_wheel
-``
-Upload
+uv run python -m build
+```
+Upload via Twine:
 ```bash
-python3 -m twine upload  --verbose dist/*
+uv run twine upload --verbose dist/*
 ```

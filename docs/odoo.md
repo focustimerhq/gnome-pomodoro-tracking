@@ -21,49 +21,44 @@ gnome-pomodoro-tracking --plugin odoo
 Copy this command adn paste in terminal replacing PASS with your token
 
   ```bash
-  gnome-pomodoro-tracking --database DB --url URL  --username USER --password PASS
+  gnome-pomodoro-tracking odoo --database DB --url URL --username USER --password PASS
   ```
 
 ### Start tracking
 
 Before you start tracking, you need to set up a project. It is usually set up once. If don't set up, it will use the first workspace and project.
 
- 
+
 Projects, you can list and set using this command this command.
 
 List
 ```bash
-gnome-pomodoro-tracking --projects  
+gnome-pomodoro-tracking odoo --projects  
 ```
 
 Set
 ```bash
-gnome-pomodoro-tracking --projects --set ID
+gnome-pomodoro-tracking odoo --projects --set ID
 ```
 
 Tasks, if you want add time logging in a task, you can list and set using this command. Is optional
 
 List
 ```bash
-gnome-pomodoro-tracking --tasks
+gnome-pomodoro-tracking odoo --tasks
 ```
 Set
 ```bash
-gnome-pomodoro-tracking --tasks --set ID
+gnome-pomodoro-tracking odoo --tasks --set ID
 ```
 
 
-For advanced CLI usage and customization, please refer to the guide: [introducing.md](introducing.md)
+For advanced CLI usage and customization, please refer to the guide: [README.md](../README.md)
 
 
 
-### Versions Odoo Supported
+### Versions Supported
 
 | Odoo Version  |  Community  | Enterprise  |
 | -  |  -  | -  |
-| 16.0  | ✅  | ✅  |
-| 15.0  | ❌  | ❌  |
-| 14.0  | ❌  | ❌  |
-| 13.0  | ✅  | ✅  |
-| 12.0  | ✅  | ✅  |
-| 11.0  | ❌  | ❌  |
+| 19.0 | ✅  | ✅  |

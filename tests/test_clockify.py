@@ -1,74 +1,69 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2021 The Project GNOME Pomodoro Tracking Authors
-import os
+# Copyright (c) gnome-pomodoro-tracking contributors. SPDX-License-Identifier: MIT
+# Authors: Jose Hernandez <josehbez@outlook.com>
+
+from unittest.mock import patch
+
 from tests.test_plugin import TestPlugin
-from mock import patch
 
 
 class TestClockify(TestPlugin):
-
     plugin = "clockify"
-    token = os.getenv("GP_TRACKING_CLOCKIFY_TOKEN", "X/oWnmt2eyj4ZCbh")
+    token = "X/oWnmt2eyj4ZCbh"
 
-    workspaces = [
+    workspaces_data = [
         {"id": "5e9ca62da2686b699ed5748d", "name": "Workspace C1"},
         {"id": "5e9ca62da2786b699ed5748d", "name": "Workspace C2"},
     ]
-    projects = [
+    projects_data = [
         {
             "id": "5eab188c991f8972bb9a1fa3",
             "name": "Project C1",
             "workspaceId": "5e9ca62da2686b699ed5748d",
         },
-        {
-            "id": "5eab188c991f8972bb9a1fa4",
-            "name": "Project C2",
-            "workspaceId": "5e9ca62da2786b699ed5748d",
-        },
     ]
 
-    auth = True
     time_entry = {"id": "6065003e9341062dc3acf936", "name": "Time entry"}
 
     def setUp(self) -> None:
-        super(TestClockify, self).setUp()
-        self.gpt.settings_config("plugin", self.plugin)
-        self.gpt.set_config(self.plugin, "token", self.token)
+        super().setUp()
+        self.config.set("settings", "plugin", self.plugin)
+        self.config.set(self.plugin, "token", self.token)
 
-        if self.token == "X/oWnmt2eyj4ZCbh":
-            patch(
-                "gnome_pomodoro_tracking.clockify.Clockify.auth", return_value=self.auth
-            ).start()
-            patch(
-                "gnome_pomodoro_tracking.clockify.Clockify.workspaces",
-                return_value=self.workspaces,
-            ).start()
-            patch(
-                "gnome_pomodoro_tracking.clockify.Clockify.projects",
-                return_value=self.projects,
-            ).start()
-            patch(
-                "gnome_pomodoro_tracking.clockify.Clockify.add_time_entry",
-                return_value=self.time_entry,
-            ).start()
-
-        self.load_plugin()
+        patch(
+            "gnome_pomodoro_tracking.plugins.clockify.Clockify.auth", return_value=True
+        ).start()
+        patch(
+            "gnome_pomodoro_tracking.plugins.clockify.Clockify.workspaces",
+            return_value=self.workspaces_data,
+        ).start()
+        patch(
+            "gnome_pomodoro_tracking.plugins.clockify.Clockify.projects",
+            return_value=self.projects_data,
+        ).start()
+        patch(
+            "gnome_pomodoro_tracking.plugins.clockify.Clockify.add_time_entry",
+            return_value=self.time_entry,
+        ).start()
 
     def test_cli(self):
-
-        args = {"clockify_workspaces": True}
-        idA = self.cli_list(args)
-        args.update({"set": idA})
-        idB = self.cli_set(args)
-        assert idA == idB
-
-        args.update(
-            {"clockify_projects": True, "clockify_workspaces": False, "set": False}
+        # Workspaces
+        self.execute_cli(
+            self.plugin,
+            workspaces=True,
+            projects=False,
+            token=None,
+            set="5e9ca62da2686b699ed5748d",
         )
-        idA = self.cli_list(args)
-        args.update({"set": idA})
-        idB = self.cli_set(args)
-        assert idA == idB
+        assert (
+            self.config.get(self.plugin, "workspace_id") == "5e9ca62da2686b699ed5748d"
+        )
 
-        args.update({"time_entry": True, "set": False, "clockify_projects": False})
-        self.cli_time_entry(args)
+        # Projects
+        self.execute_cli(
+            self.plugin,
+            workspaces=False,
+            projects=True,
+            token=None,
+            set="5eab188c991f8972bb9a1fa3",
+        )
+        assert self.config.get(self.plugin, "project_id") == "5eab188c991f8972bb9a1fa3"

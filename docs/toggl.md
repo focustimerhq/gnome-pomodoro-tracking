@@ -1,7 +1,7 @@
 # Toggl Track Integration
 
 
-###  Enable plugin
+### Enable plugin
 
 Copy and paste this command in terminal
 ```bash
@@ -17,7 +17,7 @@ gnome-pomodoro-tracking --plugin toggl
 
 Copy this command and replace `TOKEN` with your API token
 ```bash
-gnome-pomodoro-tracking --token TOKEN
+gnome-pomodoro-tracking toggl --token TOKEN
 ```
   
 
@@ -29,21 +29,21 @@ Workspaces, you can list and set using this command this command.
 
 List
 ```bash
-gnome-pomodoro-tracking --workspaces
+gnome-pomodoro-tracking toggl --workspaces
 ```
 Set 
 ```bash
-gnome-pomodoro-tracking --workspaces --set ID
+gnome-pomodoro-tracking toggl --workspaces --set ID
 ```
 
 Projects, you can list and set using this command this command.
 List
 ```bash
-  gnome-pomodoro-tracking --projects
+  gnome-pomodoro-tracking toggl --projects
 ```
 Set
 ```bash 
-  gnome-pomodoro-tracking --projects --set ID
+  gnome-pomodoro-tracking toggl --projects --set ID
 ```
 
-For advanced CLI usage and customization, please refer to the guide: [introducing.md](introducing.md)
+For advanced CLI usage and customization, please refer to the guide: [README.md](../README.md)

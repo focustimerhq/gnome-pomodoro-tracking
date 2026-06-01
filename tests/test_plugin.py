@@ -1,42 +1,29 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2021 The Project GNOME Pomodoro Tracking Authors
+# Copyright (c) gnome-pomodoro-tracking contributors. SPDX-License-Identifier: MIT
+# Authors: Jose Hernandez <josehbez@outlook.com>
+
+import argparse
+import os
 import unittest
-from gnome_pomodoro_tracking.tracking import Tracking
+
+from gnome_pomodoro_tracking.core.config import ConfigManager
+from gnome_pomodoro_tracking.core.plugin_manager import PluginManager
+from gnome_pomodoro_tracking.core.tracker import Tracker
 
 
 class TestPlugin(unittest.TestCase):
-
     def setUp(self) -> None:
-        self.gpt = Tracking("gnome-pomodoro-tracking.template")
-        self.gpt.parse.set_defaults(debug=True)
+        self.config_path = "gnome-pomodoro-tracking.template"
+        self.config = ConfigManager(self.config_path)
+        self.plugin_manager = PluginManager(self.config)
+        self.tracker = Tracker(self.config, self.plugin_manager)
 
-    def load_plugin(self):
-        self.gpt.load_plugin()
-        self.gpt.add_parse_args()
+    def tearDown(self):
+        if os.path.exists(self.config_path):
+            os.remove(self.config_path)
 
-    def cli_list(self, parse_defaults):
-        self.gpt.parse.set_defaults(**parse_defaults)
-        self.gpt.cli()
-        id = self.get_stdout_id()
-        return id
-
-    def cli_set(self, parse_defaults):
-        self.gpt.parse.set_defaults(**parse_defaults)
-        self.gpt.cli()
-        id = self.get_stdout_id()
-        return id
-
-    def get_stdout_id(self):
-        id = None
-        with open(".gnome-pomodoro-tracking.log", "r") as f:
-            lines = f.readlines()
-            line_split = str(lines[len(lines) - 1]).split("tracking.py:write")
-            if len(line_split) == 2:
-                id = line_split[1].strip().split(" ")[0] or None
-            f.close()
-        assert isinstance(id, str)
-        return id
-
-    def cli_time_entry(self, parse_defaults):
-        self.gpt.parse.set_defaults(**parse_defaults)
-        self.gpt.cli()
+    def execute_cli(self, plugin_name, **kwargs):
+        plugin = self.plugin_manager.get_plugin(plugin_name)
+        if not plugin:
+            return None
+        args = argparse.Namespace(**kwargs)
+        plugin.execute_subcommand(args)

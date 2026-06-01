@@ -16,7 +16,7 @@ gnome-pomodoro-tracking --plugin clockify
 
 Copy this command and replace `TOKEN` with your API token
 ```bash
-gnome-pomodoro-tracking --token TOKEN
+gnome-pomodoro-tracking clockify --token TOKEN
 ```
 
 ### Start tracking
@@ -27,21 +27,22 @@ Workspaces, you can list and set using this command this command.
 
 List
 ```bash
-gnome-pomodoro-tracking --workspaces
+gnome-pomodoro-tracking clockify --workspaces
 ```
 Set 
 ```bash
-gnome-pomodoro-tracking --workspaces --set ID
+gnome-pomodoro-tracking clockify --workspaces --set ID
 ```
 
 Projects, you can list and set using this command this command.
 List
 ```bash
-  gnome-pomodoro-tracking --projects
+  gnome-pomodoro-tracking clockify --projects
 ```
 Set
 ```bash 
-  gnome-pomodoro-tracking --projects --set ID
+  gnome-pomodoro-tracking clockify --projects --set ID
 ```
 
-For advanced CLI usage and customization, please refer to the guide: [introducing.md](introducing.md)
+For advanced CLI usage and customization, please refer to the guide: [README.md](../README.md)
+

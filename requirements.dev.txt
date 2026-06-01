@@ -1,5 +1,0 @@
-requests
-mock
-flake8
-twine
-autopep8

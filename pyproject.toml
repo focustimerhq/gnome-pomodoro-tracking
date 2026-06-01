@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gnome-pomodoro-tracking"
+version = "5.0.0"
+authors = [
+  { name="Jose Hernandez", email="josehbez@outlook.com" },
+]
+description = "Connect your Pomodoros to popular time tracking services."
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "requests",
+]
+
+[project.urls]
+Homepage = "https://github.com/focustimerhq/gnome-pomodoro-tracking"
+
+[project.scripts]
+gnome-pomodoro-tracking = "gnome_pomodoro_tracking.__main__:main"
+
+[tool.setuptools.packages.find]
+exclude = ["docs*", "tests*"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "mock",
+    "twine",
+    "ruff",
+    "mypy",
+    "types-requests"
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"] # pyflakes, pycodestyle, isort, pyupgrade
+ignore = ["E501"] # Ignore long lines
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true

@@ -1,7 +1,3 @@
-
-> [!WARNING]
-> **This version is deprecated.** The new version lives in the [`main`](https://github.com/focustimerhq/gnome-pomodoro-tracking/tree/main) branch.
-
 <p align="center">
   <img src="docs/img/how-does-it-workv4.png" width="1200">
 </p>
@@ -25,11 +21,6 @@ Our CLI tool integrates with Toggl, Clockify, and Odoo to provide accurate time 
 ## Getting Started
 
 ### 1. Install
-To get started, simply install the package using pip or uv:
-
-```bash
-pip install -U gnome-pomodoro-tracking
-```
 
 #### From source (main branch)
 

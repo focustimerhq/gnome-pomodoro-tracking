@@ -112,7 +112,7 @@ gnome-pomodoro-tracking  --et-name ${status} --et-minutes ${elapsed:minutes}
 ```
 
 
-**If using `uv` (for development):**
+**If using `uv`:**
 ```bash
 uv run python gnome_pomodoro_tracking  --et-name ${status} --et-minutes ${elapsed:minutes}
 ```

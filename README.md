@@ -26,6 +26,22 @@ To get started, simply install the package using pip or uv:
 pip install -U gnome-pomodoro-tracking
 ```
 
+#### From source (main branch)
+
+Install the latest code directly from the repository:
+
+```bash
+pip install -U "git+ssh://git@github.com/focustimerhq/gnome-pomodoro-tracking.git@main"
+```
+
+Or clone the repository and install it locally:
+
+```bash
+git clone -b main git@github.com:focustimerhq/gnome-pomodoro-tracking.git
+cd gnome-pomodoro-tracking
+pip install -U .
+```
+
 ### 2. Choose Your Time Tracking Service
 
 We support three popular services:
@@ -96,17 +112,15 @@ gnome-pomodoro-tracking --status
 
 **If installed globally:**
 ```bash
-gnome-pomodoro-tracking -gps "$(state)" -gpt "$(triggers)" -gpd "$(duration)" -gpe "$(elapsed)"
+gnome-pomodoro-tracking  --et-name ${status} --et-minutes ${elapsed:minutes}
 ```
 
-**If installed in a virtual environment (venv):**
-Replace `/path/to/venv` with the actual path to your virtual environment.
-```bash
-/path/to/venv/bin/gnome-pomodoro-tracking -gps "$(state)" -gpt "$(triggers)" -gpd "$(duration)" -gpe "$(elapsed)"
-```
 
 **If using `uv` (for development):**
-Replace `/path/to/project` with the path where you cloned the repository.
 ```bash
-cd /path/to/project && uv run gnome-pomodoro-tracking -gps "$(state)" -gpt "$(triggers)" -gpd "$(duration)" -gpe "$(elapsed)"
+uv run python gnome_pomodoro_tracking  --et-name ${status} --et-minutes ${elapsed:minutes}
 ```
+
+<p align="center">
+  <img src="docs/img/ft.png" width="1200">
+</p>

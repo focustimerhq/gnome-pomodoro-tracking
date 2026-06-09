@@ -32,7 +32,7 @@ class BasePlugin:
     def add_time_entry(self, **kwargs) -> Any:
         raise NotImplementedError
 
-    def register_subcommand(self, subparsers):
+    def register_subcommand(self, subparsers, parents=None):
         # Optional override for plugins to add their own CLI args
         pass
 

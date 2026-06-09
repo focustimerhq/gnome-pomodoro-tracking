@@ -27,3 +27,20 @@ class TestPlugin(unittest.TestCase):
             return None
         args = argparse.Namespace(**kwargs)
         plugin.execute_subcommand(args)
+
+    def test_set_name_starts_session(self):
+        self.tracker.set_name("abc")
+        self.assertEqual(self.config.get("tracker", "name"), "abc")
+        self.assertEqual(self.config.get("tracker", "type"), "Pomodoro")
+        self.assertTrue(self.config.get("tracker", "start"))
+
+    def test_set_name_keeps_active_session_start(self):
+        self.tracker.start("pomodoro", "first")
+        start = self.config.get("tracker", "start")
+        self.tracker.set_name("second")
+        self.assertEqual(self.config.get("tracker", "name"), "second")
+        self.assertEqual(self.config.get("tracker", "start"), start)
+
+    def test_set_tag(self):
+        self.tracker.set_tag("dev,urgent")
+        self.assertEqual(self.config.get("tracker", "tag"), "dev,urgent")

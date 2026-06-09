@@ -25,8 +25,10 @@ class Clockify(BasePlugin):
     def http_headers(self):
         return {"X-Api-Key": self.token()}
 
-    def register_subcommand(self, subparsers):
-        parser = subparsers.add_parser(self.name, help="Clockify plugin commands")
+    def register_subcommand(self, subparsers, parents=None):
+        parser = subparsers.add_parser(
+            self.name, help="Clockify plugin commands", parents=parents or []
+        )
         parser.add_argument(
             "-w", "--workspaces", action="store_true", help="List workspaces"
         )

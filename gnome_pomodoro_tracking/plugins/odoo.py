@@ -13,8 +13,10 @@ class Odoo(BasePlugin):
     name = "odoo"
     required_config = ["username", "password", "url", "database"]
 
-    def register_subcommand(self, subparsers):
-        parser = subparsers.add_parser(self.name, help="Odoo plugin commands")
+    def register_subcommand(self, subparsers, parents=None):
+        parser = subparsers.add_parser(
+            self.name, help="Odoo plugin commands", parents=parents or []
+        )
         parser.add_argument(
             "-p", "--projects", action="store_true", help="List projects"
         )

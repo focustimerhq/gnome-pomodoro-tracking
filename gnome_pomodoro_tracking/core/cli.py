@@ -36,6 +36,13 @@ def main():
     parser.add_argument("--name", help="Name of the task")
     parser.add_argument("--tag", help="Tag for the task")
 
+    # Shared options so --name/--tag also work after a plugin subcommand
+    # (e.g. `... toggl --name abc`). SUPPRESS keeps them from clobbering the
+    # value parsed before the subcommand.
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument("--name", default=argparse.SUPPRESS, help=argparse.SUPPRESS)
+    common.add_argument("--tag", default=argparse.SUPPRESS, help=argparse.SUPPRESS)
+
     # Let frontends register their arguments
     frontend_manager.register_arguments(parser)
 
@@ -45,7 +52,7 @@ def main():
     for name, plugin_class in plugin_manager.plugins.items():
         plugin_instance = plugin_manager.get_plugin(name)
         if plugin_instance:
-            plugin_instance.register_subcommand(subparsers)
+            plugin_instance.register_subcommand(subparsers, parents=[common])
 
     args, unknown = parser.parse_known_args()
 
@@ -57,14 +64,24 @@ def main():
         config.set("settings", "plugin", args.plugin)
         logger.info(f"Plugin set to {args.plugin}")
 
+    name = getattr(args, "name", None)
+    tag = getattr(args, "tag", None)
+
     if args.start:
-        tracker.start("pomodoro", args.name, args.tag)
+        tracker.start("pomodoro", name, tag)
         logger.info("Timer started")
     elif args.stop:
         tracker.stop()
         logger.info("Timer stopped")
-    elif args.status:
-        tracker.status()
+    else:
+        if name:
+            tracker.set_name(name)
+            logger.info(f"Tracker name set to {name}")
+        if tag:
+            tracker.set_tag(tag)
+            logger.info(f"Tracker tag set to {tag}")
+        if args.status:
+            tracker.status()
 
     # Dispatch to plugin command
     if args.command:

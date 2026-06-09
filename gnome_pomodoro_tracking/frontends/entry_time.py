@@ -13,16 +13,10 @@ class EntryTime(BaseFrontend):
     def register_arguments(self, parser: argparse.ArgumentParser):
         group = parser.add_argument_group("Manual Time Entry")
         group.add_argument(
-            "-etn",
-            "--et-name",
-            dest="et_name",
-            help="Name of the manual time entry",
+            "-etn", "--et-name", dest="et_name", help=argparse.SUPPRESS
         )
         group.add_argument(
-            "-etm",
-            "--et-minutes",
-            dest="et_minutes",
-            help="Duration in minutes for the manual time entry (cast to int)",
+            "-etm", "--et-minutes", dest="et_minutes", help=argparse.SUPPRESS
         )
 
     def handle(self, args: argparse.Namespace) -> bool:

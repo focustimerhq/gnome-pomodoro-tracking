@@ -18,6 +18,22 @@ class Tracker:
         self.config.set("tracker", "tag", tag or "")
         self.config.set("tracker", "start", utils.now())
 
+    def _ensure_session(self):
+        """Begin a tracking session if none is active."""
+        if not self.config.get("tracker", "name") and not self.config.get(
+            "tracker", "start"
+        ):
+            self.config.set("tracker", "type", "Pomodoro")
+            self.config.set("tracker", "start", utils.now())
+
+    def set_name(self, name):
+        self._ensure_session()
+        self.config.set("tracker", "name", name)
+
+    def set_tag(self, tag):
+        self._ensure_session()
+        self.config.set("tracker", "tag", tag)
+
     def stop(self):
         self.add_time_entry()
 

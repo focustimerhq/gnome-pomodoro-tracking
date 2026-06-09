@@ -20,8 +20,10 @@ class Toggl(BasePlugin):
         token = self.config.get(self.name, "token", "")
         return (token, "api_token")
 
-    def register_subcommand(self, subparsers):
-        parser = subparsers.add_parser(self.name, help="Toggl plugin commands")
+    def register_subcommand(self, subparsers, parents=None):
+        parser = subparsers.add_parser(
+            self.name, help="Toggl plugin commands", parents=parents or []
+        )
         parser.add_argument(
             "-w", "--workspaces", action="store_true", help="List workspaces"
         )

@@ -1,3 +1,7 @@
+
+> [!WARNING]
+> **This version is deprecated.** The new version lives in the [`main`](https://github.com/focustimerhq/gnome-pomodoro-tracking/tree/main) branch.
+
 <p align="center">
   <img src="docs/img/how-does-it-workv4.png" width="1200">
 </p>
@@ -11,6 +15,7 @@
 
   </a>
 </p>
+
 
 # Welcome to Timesheet Sync!
 Our CLI tool integrates with Toggl, Clockify, and Odoo to provide accurate time logging for your tasks and projects. It can be used directly from the terminal or seamlessly integrated with Focus Timer (formerly gnome-pomodoro).

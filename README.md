@@ -1,3 +1,7 @@
+
+> [!WARNING]
+> **This version is deprecated.** The new version lives in the [`main`](https://github.com/focustimerhq/gnome-pomodoro-tracking/tree/main) branch.
+
 <p align="center">
   <img src="docs/img/how-does-it-workv4.png" width="1200">
 </p>
@@ -58,7 +62,3 @@ We support three popular services:
 ### 4. Command line 
 
 For advanced CLI usage and customization, please refer to the guide: [introducing.md](docs/introducing.md)
-
-
-
-
